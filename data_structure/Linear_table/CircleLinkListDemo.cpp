@@ -1,4 +1,7 @@
-#define MAXSIZE 100
+/* 
+2021.9.27
+单向循环链表
+ */
 #define TRUE 1
 #define OK 1
 #define ERROR 0
@@ -54,6 +57,7 @@ int IsEmpty(CircleLinkList CT)
 {
     return CT->next == NULL;
 }
+//连接两个循环链表成一个循环链表
 CircleLinkList ConnectTwoCL(CircleLinkList Ta, CircleLinkList Tb)
 {
     if (IsEmpty(Ta))
@@ -66,7 +70,7 @@ CircleLinkList ConnectTwoCL(CircleLinkList Ta, CircleLinkList Tb)
     Tb->next = p;
     return Tb;
 }
-
+//遍历链表，并打印每一个节点的值
 void showCL(CircleLinkList CT)
 {
     if (IsEmpty(CT))
