@@ -253,4 +253,10 @@ void MergeList_L(LinkList LA, LinkList LB, LinkList &LC)
 //遍历链表并打印输出每一个节点的值
 void ShowList_L(LinkList L)
 {
+    LinkList temp = L->next;
+    while (temp)
+    {
+        printf("%d", temp->data);
+        temp = temp->next;
+    }
 }
