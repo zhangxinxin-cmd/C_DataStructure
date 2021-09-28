@@ -1,3 +1,7 @@
+/* 
+2021.9.27
+单链表实现和操作
+ */
 #define MAXSIZE 100
 #define TRUE 1
 #define OK 1
@@ -28,6 +32,9 @@ Status InsertElem_L(LinkList &, ElemType, int);
 Status DeleteElem_L(LinkList &, int, ElemType);
 void CreateList_H(LinkList &, int);
 void CreateList_T(LinkList &, int);
+void Union(LinkList &, LinkList &);
+void MergeList_L(LinkList, LinkList, LinkList &);
+void ShowList_L(LinkList);
 
 int main(int argc, char const *argv[])
 {
@@ -194,4 +201,56 @@ void CreateList_T(LinkList &L, int n)
         newNode->next = NULL;
         T = newNode;
     }
+}
+//两线性表的合并
+void Union(LinkList &La, LinkList &Lb)
+{
+    int la_len = GetLength_L(La);
+    int Lb_len = GetLength_L(Lb);
+    ElemType e;
+    for (int i = 0; i < Lb_len; i++)
+    {
+        GetElem_L(Lb, i + 1, e);           //将第i+1位置的值填入e中
+        if (!LocateElem_L(La, e))          //判断La链表中是否存在e,没有就返回0，有返回所在位置>=1
+            InsertElem_L(La, e, ++Lb_len); //将e插入La链表长度+1的位置出，也就是成为新的尾节点
+    }
+}
+//循环实现合并两有序链表生成一个有序链表
+void MergeList_L(LinkList LA, LinkList LB, LinkList &LC)
+{
+    LinkList PA = LA->next;
+    LinkList PB = LB->next;
+    LC = LA;
+    LinkList PC = LC;
+    while (PA && PB)
+    {
+        if (PA->data < PB->data)
+        {
+            PC->next = PA;
+            PC = PA;
+            PA = PA->next;
+        }
+        else
+        {
+            PC->next = PB;
+            PC = PB;
+            PB = PB->next;
+        }
+        LinkList P = PB;
+        ;
+        if (PA)
+        {
+            P = PA;
+        }
+        while (P)
+        {
+            PC->next = P;
+            PC = P;
+            P = P->next;
+        }
+    }
+}
+//遍历链表并打印输出每一个节点的值
+void ShowList_L(LinkList L)
+{
 }

@@ -1,5 +1,6 @@
 /* 
- 
+ 2021.9.26
+ 顺序表实现和操作
  */
 #define MAXSIZE 100
 #define TRUE 1
@@ -27,6 +28,7 @@ Status GetElem(SqList, int, ElemType &);
 int LocateElem(SqList, ElemType);
 Status ListInsert(SqList &, int i, ElemType);
 Status ListDelete(SqList &, int i, ElemType &);
+void MergeList_Sq(SqList, SqList, SqList &);
 
 int main(int argc, char const *argv[])
 {
@@ -111,4 +113,26 @@ Status ListDelete(SqList &L, int i, ElemType &e)
     L.elem[L.length - 1] = e;
     L.length--;
     return OK;
+}
+//合并两个有序链表成一个有序链表
+void MergeList_Sq(SqList LA, SqList LB, SqList &LC)
+{
+    LC.length = LA.length + LB.length;
+    LC.elem = new ElemType(LC.length);
+    int PA = 0;
+    int PB = 0;
+    int PC = 0;
+    while (PA < LA.length && PB < LA.length)
+    {
+        if (LA.elem[PA] < LB.elem[PB])
+            LC.elem[PC++] = LA.elem[PA++];
+        else
+            LC.elem[PC++] = LB.elem[PB++];
+    }
+    while (PA < LA.length)
+        LC.elem[PC++] = LA.elem[PA++];
+    while (PB < LB.length)
+    {
+        LC.elem[PC++] = LB.elem[PB++];
+    }
 }
