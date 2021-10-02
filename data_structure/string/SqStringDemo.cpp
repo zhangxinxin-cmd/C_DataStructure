@@ -2,6 +2,8 @@
 #define OK 1
 #define ERROR -1
 #include <iostream>
+#include <string.h>
+
 using namespace std;
 typedef int Status;
 typedef struct
@@ -17,26 +19,21 @@ Status Concat(SString &, SString &);
 Status subString(SString, SString &, int, int);
 Status Index(SString, SString, int &);
 Status Index2(SString, SString, int &);
-void GetNext(char[], int, int);
+void GetNext(char[], int, int[]);
 Status Index_KMP(SString, SString, int &);
 int main(int argc, char const *argv[])
 {
     SString T1;
     SString T2;
-    char chs1[] = "abbaaabbababab";
+    char chs1[] = "abbaaabbabababaa";
     StrAssign(T1, chs1);
-    char chs2[] = "abba";
+    char chs2[] = "ababaa";
     StrAssign(T2, chs2);
     int index = 100;
-    Index2(T1, T2, index);
+    Index_KMP(T1, T2, index);
     cout << index << endl;
     cout << "=====================" << endl;
-    /* int next[4] = {100, 100, 100, 100};
-    GetNext(chs2, 4, next[4]);
-    for (int i = 0; i < 4; i++)
-    {
-        cout << next[i] << endl;
-    } */
+
     system("pause");
     return 0;
 }
@@ -135,19 +132,6 @@ Status Index(SString T1, SString T2, int &pos)
     }
     return ERROR;
 }
-// 使用KMP算法
-/* void GetNext(char ch[], int length, int next[])
-{
-    next[0] = 0;
-    int i = 0, j = 0;
-    while (i < length)
-    {
-        if (j == 0 || ch[i] == ch[j])
-            next[++i] = ++j;
-        else
-            j = next[j];
-    }
-}
 Status Index2(SString T1, SString T2, int &pos)
 {
     int i = 0;
@@ -172,10 +156,28 @@ Status Index2(SString T1, SString T2, int &pos)
     }
     return ERROR;
 }
+// 使用KMP算法
+/* 
+KMP算法的优点是文本字符串指针永远不会回溯，而模式串指针根据最大相同前后缀来回溯，时间复杂度从O(mXn)降为O(m+n)
+KMP算法的核心是得到next[]数组，
+此数组的意义是next[i]代表了截至当前字符的字符串的最大相同前后缀字符串长度，
+同时也等于下次比较时模式字符串的初始下标
+ */
+void GetNext(char ch[], int length, int next[])
+{
+    next[0] = -1;
+    next[1] = 0;
+    next[2] = 0;
+    next[3] = 1;
+    next[4] = 2;
+    next[5] = 3;
+}
 Status Index_KMP(SString T1, SString T2, int &pos)
 {
     int i = 0;
     int j = 0;
+    int *next = new int[T2.length];
+    GetNext(T2.ch, T2.length, next);
     while (i < T1.length && j < T2.length)
     {
         if (T1.ch[i] == T2.ch[j])
@@ -185,8 +187,10 @@ Status Index_KMP(SString T1, SString T2, int &pos)
         }
         else
         {
-            i = i - j + 1;
-            j = 0;
+            if (next[j] == -1)
+                i++;
+            else
+                j = next[j];
         }
     }
     if (j == T2.length)
@@ -195,4 +199,4 @@ Status Index_KMP(SString T1, SString T2, int &pos)
         return OK;
     }
     return ERROR;
-} */
+}
