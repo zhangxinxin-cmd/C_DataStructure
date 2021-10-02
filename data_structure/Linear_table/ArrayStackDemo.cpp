@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-09-29 09:01:10
+ * @LastEditTime: 2021-10-02 20:03:22
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \C_data_structure\data_structure\Linear_table\ArrayStackDemo.cpp
+ */
 #define MAXSIZE 10
 #define OK 1
 #define ERROR 0
@@ -74,7 +82,7 @@ Status GetTop_Sq(SqStack AS, ElemType &e)
     return OK;
 }
 //清空栈
-void ClearStack_Sq(SqStack AS &)
+void ClearStack_Sq(SqStack &AS)
 {
     AS.top = -1;
 }

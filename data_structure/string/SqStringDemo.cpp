@@ -16,17 +16,27 @@ int Strlength(SString &);
 Status Concat(SString &, SString &);
 Status subString(SString, SString &, int, int);
 Status Index(SString, SString, int &);
+Status Index2(SString, SString, int &);
+void GetNext(char[], int, int);
+Status Index_KMP(SString, SString, int &);
 int main(int argc, char const *argv[])
 {
     SString T1;
     SString T2;
-    char chs1[] = "abcdefg";
+    char chs1[] = "abbaaabbababab";
     StrAssign(T1, chs1);
-    char chs2[] = "de";
+    char chs2[] = "abba";
     StrAssign(T2, chs2);
     int index = 100;
-    Index(T1, T2, index);
+    Index2(T1, T2, index);
     cout << index << endl;
+    cout << "=====================" << endl;
+    /* int next[4] = {100, 100, 100, 100};
+    GetNext(chs2, 4, next[4]);
+    for (int i = 0; i < 4; i++)
+    {
+        cout << next[i] << endl;
+    } */
     system("pause");
     return 0;
 }
@@ -114,7 +124,8 @@ Status Index(SString T1, SString T2, int &pos)
     for (int i = 0; i < T1.length - T2.length + 1; i++)
     {
         SString subT;
-        StrAssign(subT, "");
+        char ch[] = "";
+        StrAssign(subT, ch);
         subString(T1, subT, i, T2.length);
         if (!StrCompare(subT, T2))
         {
@@ -124,3 +135,64 @@ Status Index(SString T1, SString T2, int &pos)
     }
     return ERROR;
 }
+// 使用KMP算法
+/* void GetNext(char ch[], int length, int next[])
+{
+    next[0] = 0;
+    int i = 0, j = 0;
+    while (i < length)
+    {
+        if (j == 0 || ch[i] == ch[j])
+            next[++i] = ++j;
+        else
+            j = next[j];
+    }
+}
+Status Index2(SString T1, SString T2, int &pos)
+{
+    int i = 0;
+    int j = 0;
+    while (i < T1.length && j < T2.length)
+    {
+        if (T1.ch[i] == T2.ch[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            i = i - j + 1;
+            j = 0;
+        }
+    }
+    if (j == T2.length)
+    {
+        pos = i - j;
+        return OK;
+    }
+    return ERROR;
+}
+Status Index_KMP(SString T1, SString T2, int &pos)
+{
+    int i = 0;
+    int j = 0;
+    while (i < T1.length && j < T2.length)
+    {
+        if (T1.ch[i] == T2.ch[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            i = i - j + 1;
+            j = 0;
+        }
+    }
+    if (j == T2.length)
+    {
+        pos = i - j;
+        return OK;
+    }
+    return ERROR;
+} */
