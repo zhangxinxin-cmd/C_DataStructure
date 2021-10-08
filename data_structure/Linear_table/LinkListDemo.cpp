@@ -149,7 +149,7 @@ Status InsertElem_L(LinkList &L, ElemType e, int i)
     return OK;
 }
 //删除第i个节点，并返回其值
-Status DeleteElem_L(LinkList &L, int i, ElemType e)
+Status DeleteElem_L(LinkList &L, int i, ElemType &e)
 {
     LinkList p = L;
     int j = 1;
